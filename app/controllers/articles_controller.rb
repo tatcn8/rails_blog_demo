@@ -1,4 +1,8 @@
 class ArticlesController < ApplicationController
+
+  http_basic_authenticate_with name: "dhh", password: "secret",
+except: [:index, :show]
+
   def index
     @articles = Article.all
   end
@@ -34,16 +38,14 @@ class ArticlesController < ApplicationController
       render :edit, status: :unprocessable_entity
     end
   end
-
-  def destroy
+def destroy
     @article = Article.find(params[:id])
     @article.destroy
 
     redirect_to root_path, status: :see_other
   end
-
   private
-    def article_params
-      params.require(:article).permit(:title, :body)
-    end
+  def article_params
+    params.require(:article).permit(:title, :body, :status)
+  end
 end
